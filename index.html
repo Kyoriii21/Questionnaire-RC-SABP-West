@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- Titre de l'onglet (Modifié pour enlever votre blase) -->
+  <!-- Titre de l'onglet -->
   <title>Portail Interne — S.A.B.P. Ouest</title>
   
   <!-- Logo du site dans l'onglet (Favicon) -->
-  <!-- REMPLACEZ "LIEN_DE_VOTRE_LOGO.png" PAR LE LIEN URL DE VOTRE LOGO S.A.B.P -->
-  <link rel="icon" type="image/png" href="LIEN_DE_VOTRE_LOGO.png">
+  <link rel="icon" type="image/png" href="favicon.png">
 
   <style>
     :root {
@@ -38,7 +37,6 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
-    /* Style pour intégrer un logo aussi dans l'en-tête de la page si besoin */
     .header-main {
       display: flex;
       align-items: center;
@@ -53,7 +51,6 @@
     .header-logo {
       height: 50px;
       width: auto;
-      /* Masqué par défaut si le lien n'est pas configuré */
       display: none; 
     }
 
@@ -308,10 +305,8 @@
 
 <div class="container">
   
-  <!-- En-tête avec titre et possibilité d'afficher le logo -->
   <div class="header-main">
-    <!-- Si vous mettez une image valide dans "src", supprimez style="display:none;" pour l'afficher à côté du titre -->
-    <img src="LIEN_DE_VOTRE_LOGO.png" alt="SABP Logo" class="header-logo" onerror="this.style.display='none'">
+    <img src="favicon.png" alt="SABP Logo" class="header-logo" onerror="this.style.display='none'">
     <h1>Fiche de Recrutement S.A.B.P. Ouest</h1>
   </div>
 
@@ -321,7 +316,6 @@
     <strong>Critère d'acceptation :</strong> Le candidat doit obtenir un score global <strong>égal ou supérieur à 10 points sur 20</strong>.
   </div>
   
-  <!-- Section Informations et Disponibilités -->
   <div class="header-grid">
     <div class="info-block">
       <div class="info-group">
@@ -373,22 +367,20 @@
     </div>
   </div>
 
-  <!-- Conteneur des questions générées -->
   <div id="form"></div>
   
-  <!-- Chapitre 4 : Attribution des Rôles (Inspiré de image_e8d165.png) -->
   <h2>Chapitre 4 : Mise en place des rôles Discord</h2>
   <div class="roles-box">
     <p style="margin-top: 0; font-size: 14px; color: #fff; font-weight: bold;">À l'acceptation du candidat, cochez les rôles attribués sur le serveur :</p>
     
-    <div class="role-category">\\\\ Corps d'application //</div>
+    <div class="role-category">\\ Corps d'application //</div>
     <div class="role-item">
       <input type="checkbox"> 
       <span class="role-badge badge-patrouilleur">⬤ Patrouilleur</span>
       <span style="margin-left: 10px; color: #949ba4;">— Grade de base suite à la validation</span>
     </div>
 
-    <div class="role-category">\\\\ Test et Formations //</div>
+    <div class="role-category">\\ Test et Formations //</div>
     <div class="role-item">
       <input type="checkbox" checked> 
       <span class="role-badge badge-non-valide">⬤ 📄 Formation Globale Non Validée</span>
@@ -410,7 +402,7 @@
       <span class="role-badge badge-non-valide">⬤ 🩺 Visite Médicale Non Validée</span>
     </div>
 
-    <div class="role-category">\\\\ Fonctions //</div>
+    <div class="role-category">\\ Fonctions //</div>
     <div class="role-item">
       <input type="checkbox" checked> 
       <span class="role-badge badge-sabp-ouest">⬤ S.A.B.P. OUEST</span>
@@ -418,7 +410,6 @@
     </div>
   </div>
   
-  <!-- Barre de Score Collante -->
   <div class="score-sticky-bar">
     <div class="score-title" id="score-status-text">Résultat global en pourcentage :</div>
     <div class="score-value" id="total-percentage">0%</div>
@@ -426,12 +417,13 @@
 </div>
 
 <script>
-// Génération automatique du tableau des disponibilités
+// Génération automatique du tableau des disponibilités (Toutes décochées par défaut !)
 const jours = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 const dispoBody = document.getElementById("dispo-body");
 jours.forEach(jour => {
   const tr = document.createElement("tr");
-  tr.innerHTML = `<td>${jour}</td>` + '<td><input type="checkbox" checked></td>'.repeat(6);
+  // Retrait de l'attribut 'checked' pour que les cases soient vides
+  tr.innerHTML = `<td>${jour}</td>` + '<td><input type="checkbox"></td>'.repeat(6);
   dispoBody.appendChild(tr);
 });
 
@@ -440,11 +432,11 @@ const data = [
   {
     section: "Chapitre 2 : Partie Théorique",
     questions: [
-      { q: "Connaissez-vous la signification de l’acronyme : SABP ?", note: "Réponse attendue : San Andreas Border Patrol (1pt)", max: 1 },
+      { q: "Connaissez-vous la signification de l’acronyme : SABP ?", note: "San Andreas Border Patrol (1pt)", max: 1 },
       { q: "Missions du SABP : Assurer la sûreté ainsi que la sécurité des frontières ?", note: "Évoqué par le candidat (1pt)", max: 1 },
       { q: "Missions du SABP : Réguler les trafics illégaux et l’immigration clandestine ?", note: "Évoqué par le candidat (1pt)", max: 1 },
       { q: "Missions du SABP : Aider les autres polices dans leurs opérations ?", note: "Évoqué par le candidat (1pt)", max: 1 },
-      { q: "Selon vous, quelle est la meilleure arme du SABP ?", note: "Réponse attendue : La communication / la parole (1pt)", max: 1 },
+      { q: "Selon vous, quelle est la meilleure arme du SABP ?", note: "La communication / la parole (1pt)", max: 1 },
       { q: "Missions d’un patrouilleur : Le fait d’apprendre ?", note: "Évoqué par le candidat (1pt)", max: 1 },
       { q: "Missions d’un patrouilleur : Suivre les ordres donnés par les supérieurs ?", note: "Évoqué par le candidat (1pt)", max: 1 },
       { q: "Missions d’un patrouilleur : Observer afin de prétendre à une évolution ?", note: "Évoqué par le candidat (1pt)", max: 1 },
@@ -452,18 +444,18 @@ const data = [
       { q: "Différence S.A.B.P vs B.C.S.O/LSPD : Statut et responsabilités d'une agence fédérale ?", note: "Évoqué par le candidat (1pt)", max: 1 },
       { q: "Contrôle de civils désagréables/longue attente : Saurez-vous faire preuve d'un mental d'acier ?", note: "Réponse claire attendue sur son mental et sa patience (1pt)", max: 1 },
       { q: "Quelle est votre expérience professionnelle dans les métiers des forces de l'ordre ou fédérales ?", note: "Au moins 1 métier similaire (Valider si le candidat s'y connaît très bien globalement) (1pt)", max: 1 },
-      { q: "Quelles sont les 4 règles du PPA ?", note: "Attendu : Arme tjs considérée chargée / Ne jamais pointer sur ce qu'on ne veut pas détruire / Index hors détente tant que pas visé / Sûr de sa cible et environnement (1pt)", max: 1 },
-      { q: "Définissez la légitime défense :", note: "Réponse attendue : Le droit de repousser une attaque illicite par des moyens proportionnés aux circonstances (1pt)", max: 1 }
+      { q: "Quelles sont les 4 règles du PPA ?", note: "Arme tjs considérée chargée / Ne jamais pointer sur ce qu'on ne veut pas détruire / Index hors détente tant que pas visé / Sûr de sa cible et environnement (1pt)", max: 1 },
+      { q: "Définissez la légitime défense :", note: "Le droit de repousser une attaque illicite par des moyens proportionnés aux circonstances (1pt)", max: 1 }
     ]
   },
   {
     section: "Chapitre 3 : Mises en Situation",
     questions: [
-      { q: "Vous êtes en civil et vous apercevez une fusillade en pleine frontière Ouest, comment réagissez-vous ?", note: "Attendu : Se met en sécurité et contacte les forces de l'ordre. (2pts) | ÉLIMINATOIRE : Veut utiliser son arme pour défendre ses collègues.", max: 2, hasEliminatory: true },
-      { q: "Vous recevez un appel radio d'un agent en détresse (position transmise), une fois sur place il n’y a personne sur zone, comment réagissez-vous ?", note: "Attendu : Sang-froid, respect de la chaîne de commandement, privilégie la radio (1pt)", max: 1 },
-      { q: "Un membre d'une organisation criminelle arrive sur frontière pour se faire contrôler (rien d'illicite), comment réagissez-vous ?", note: "Attendu : Évite le danger, prend les informations/identité et transmet aux supérieurs (1pt)", max: 1 },
-      { q: "Un véhicule du gouvernement (distinctions diplomatiques drapeau U.S.A) arrive. Le conducteur affirme avoir une « immunité ».", note: "Attendu : Garde son sang-froid, reste dans le respect total durant le passage (1pt)", max: 1 },
-      { q: "Lors d'un contrôle de routine, un individu semble suspect et décide de forcer les frontières, comment réagissez-vous ?", note: "Attendu : Communication radio immédiate avec description précise (modèle, détails) (1pt)", max: 1 }
+      { q: "Vous êtes en civil et vous apercevez une fusillade en pleine frontière Ouest, comment réagissez-vous ?", note: "Se met en sécurité et contacte les forces de l'ordre. (2pts) | ÉLIMINATOIRE : Veut utiliser son arme pour défendre ses collègues.", max: 2, hasEliminatory: true },
+      { q: "Vous recevez un appel radio d'un agent en détresse (position transmise), une fois sur place il n’y a personne sur zone, comment réagissez-vous ?", note: "Sang-froid, respect de la chaîne de commandement, privilégie la radio (1pt)", max: 1 },
+      { q: "Un membre d'une organisation criminelle arrive sur frontière pour se faire contrôler (rien d'illicite), comment réagissez-vous ?", note: "Évite le danger, prend les informations/identité et transmet aux supérieurs (1pt)", max: 1 },
+      { q: "Un véhicule du gouvernement (distinctions diplomatiques drapeau U.S.A) arrive. Le conducteur affirme avoir une « immunité ».", note: "Garde son sang-froid, reste dans le respect total durant le passage (1pt)", max: 1 },
+      { q: "Lors d'un contrôle de routine, un individu semble suspect et décide de forcer les frontières, comment réagissez-vous ?", note: "Communication radio immédiate avec description précise (modèle, détails) (1pt)", max: 1 }
     ]
   }
 ];
@@ -563,7 +555,7 @@ function updateTotalPercentage() {
     scoreValueDiv.innerText = `${percentage}% (${currentTotal} / ${totalPointsPossible} Pts)`;
     scoreValueDiv.style.background = "var(--main-yellow)";
     scoreValueDiv.style.color = "#000";
-    
+     
     if (currentTotal >= 10) {
       scoreStatusText.innerHTML = "Résultat global : <span style='color:var(--success-green); font-weight:bold;'>Candidature Validée (≥ 10 Pts)</span>";
     } else {
