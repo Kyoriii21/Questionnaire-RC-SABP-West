@@ -194,7 +194,7 @@
     }
 
     .pts-buttons button {
-      padding: 8px 14px;
+      padding: 8px 12px;
       border: 1px solid var(--border-color);
       background: #fff;
       cursor: pointer;
@@ -422,7 +422,6 @@ const jours = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dim
 const dispoBody = document.getElementById("dispo-body");
 jours.forEach(jour => {
   const tr = document.createElement("tr");
-  // Retrait de l'attribut 'checked' pour que les cases soient vides
   tr.innerHTML = `<td>${jour}</td>` + '<td><input type="checkbox"></td>'.repeat(6);
   dispoBody.appendChild(tr);
 });
@@ -497,19 +496,54 @@ data.forEach((block, blockIndex) => {
     const buttonsDiv = document.createElement("div");
     buttonsDiv.className = "pts-buttons";
 
-    const acceptBtn = document.createElement("button");
-    acceptBtn.innerText = `+${item.max} Pt${item.max > 1 ? 's' : ''}`;
-    acceptBtn.onclick = () => {
-      if(acceptBtn.classList.contains("selected-pt")) {
-        acceptBtn.classList.remove("selected-pt");
-        userScores[qKey] = 0;
-      } else {
-        acceptBtn.classList.add("selected-pt");
-        userScores[qKey] = item.max;
-      }
+    // Bouton pour remettre à 0
+    const zeroBtn = document.createElement("button");
+    zeroBtn.innerText = "0";
+    zeroBtn.classList.add("selected-pt"); // Sélectionné par défaut
+    zeroBtn.onclick = () => {
+      clearSelection(buttonsDiv);
+      zeroBtn.classList.add("selected-pt");
+      userScores[qKey] = 0;
       updateTotalPercentage();
     };
-    buttonsDiv.appendChild(acceptBtn);
+    buttonsDiv.appendChild(zeroBtn);
+
+    // Si la question vaut 1 point, on met un palier à 0.5 et 1
+    if (item.max === 1) {
+      const halfBtn = document.createElement("button");
+      halfBtn.innerText = "+0.5";
+      halfBtn.onclick = () => {
+        clearSelection(buttonsDiv);
+        halfBtn.classList.add("selected-pt");
+        userScores[qKey] = 0.5;
+        updateTotalPercentage();
+      };
+      buttonsDiv.appendChild(halfBtn);
+
+      const fullBtn = document.createElement("button");
+      fullBtn.innerText = "+1";
+      fullBtn.onclick = () => {
+        clearSelection(buttonsDiv);
+        fullBtn.classList.add("selected-pt");
+        userScores[qKey] = 1;
+        updateTotalPercentage();
+      };
+      buttonsDiv.appendChild(fullBtn);
+    } 
+    // Si la question vaut 2 points, on met les paliers adaptés
+    else if (item.max === 2) {
+      [0.5, 1, 1.5, 2].forEach(val => {
+        const btn = document.createElement("button");
+        btn.innerText = `+${val}`;
+        btn.onclick = () => {
+          clearSelection(buttonsDiv);
+          btn.classList.add("selected-pt");
+          userScores[qKey] = val;
+          updateTotalPercentage();
+        };
+        buttonsDiv.appendChild(btn);
+      });
+    }
 
     if (item.hasEliminatory) {
       const elimBtn = document.createElement("button");
@@ -535,6 +569,11 @@ data.forEach((block, blockIndex) => {
     container.appendChild(div);
   });
 });
+
+function clearSelection(buttonsContainer) {
+  const buttons = buttonsContainer.querySelectorAll("button:not(.btn-danger)");
+  buttons.forEach(btn => btn.classList.remove("selected-pt"));
+}
 
 function updateTotalPercentage() {
   let currentTotal = 0;
