@@ -323,7 +323,7 @@
   <div class="intro-box">
     <strong>Chapitre 1 : Introduction et consignes</strong><br>
     L'objectif est d'intégrer notre agence fédérale. Nous recherchons exclusivement des personnes sérieuses, motivées et investies afin de maintenir un effectif stable. <br>
-    <strong>Critère d'acceptation :</strong> Le candidat doit obtenir un score global <strong>égal ou supérieur à 10 points sur 20, aussi il ne doit pas être Black List ou licencié sur la radio D. Merci de vérifier avant le recrutement.</strong>.
+    <strong>Critère d'acceptation :</strong> Le candidat doit obtenir un score global <strong>égal ou supérieur à 10 points sur 20</strong>.
   </div>
   
   <div class="header-grid">
@@ -346,11 +346,11 @@
       </div>
       <div class="info-group">
         <label>Matricule :</label>
-        <input type="text" placeholder="Matricule du candidat">
+        <input type="text" placeholder="Son matricule">
       </div>
       <div class="info-group">
         <label>Numéro de tel :</label>
-        <input type="text" placeholder="Numéro du candidat">
+        <input type="text" placeholder="Son numéro">
       </div>
       
       <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 10px;">
@@ -447,16 +447,21 @@ jours.forEach(jour => {
   dispoBody.appendChild(tr);
 });
 
-// Ton tableau de données d'origine avec tes deux chapitres
-const quizData = [
+// Base de données des questions (Total = 20 points)
+const data = [
   {
     section: "Chapitre 2 : Partie Théorique",
     questions: [
       { q: "Connaissez-vous la signification de l’acronyme : SABP ?", note: "San Andreas Border Patrol (1pt)", max: 1 },
-      { q: "Quelles sont les missions du SABP ? :", note: "Assurer la sûreté ainsi que la sécurité des frontières, Réguler les trafics illégaux et l’immigration clandestine, Aider les autres polices dans leurs opérations (3pt)", max: 3 },
+      { q: "Missions du SABP : Assurer la sûreté ainsi que la sécurité des frontières ?", note: "Évoqué par le candidat (1pt)", max: 1 },
+      { q: "Missions du SABP : Réguler les trafics illégaux et l’immigration clandestine ?", note: "Évoqué par le candidat (1pt)", max: 1 },
+      { q: "Missions du SABP : Aider les autres polices dans leurs opérations ?", note: "Évoqué par le candidat (1pt)", max: 1 },
       { q: "Selon vous, quelle est la meilleure arme du SABP ?", note: "La communication / la parole (1pt)", max: 1 },
-      { q: "Quelles sont les missions d’un patrouilleur ? :", note: "Le fait d’apprendre, Suivre les ordres donnés par les supérieurs, Observer afin de prétendre à une évolution (3pt)", max: 3 },
-      { q: "Quelles sont les différences entre le  S.A.B.P vs B.C.S.O/LSPD ? :", note: "Le droit d'agir dans tout Los Santos (si l'infraction part des frontières), Statut et responsabilités d'une agence fédérale (2pt)", max: 2 },
+      { q: "Missions d’un patrouilleur : Le fait d’apprendre ?", note: "Évoqué par le candidat (1pt)", max: 1 },
+      { q: "Missions d’un patrouilleur : Suivre les ordres donnés par les supérieurs ?", note: "Évoqué par le candidat (1pt)", max: 1 },
+      { q: "Missions d’un patrouilleur : Observer afin de prétendre à une évolution ?", note: "Évoqué par le candidat (1pt)", max: 1 },
+      { q: "Différence S.A.B.P vs B.C.S.O/LSPD : Le droit d'agir dans tout Los Santos (si l'infraction part des frontières) ?", note: "Évoqué par le candidat (1pt)", max: 1 },
+      { q: "Différence S.A.B.P vs B.C.S.O/LSPD : Statut et responsabilités d'une agence fédérale ?", note: "Évoqué par le candidat (1pt)", max: 1 },
       { q: "Contrôle de civils désagréables/longue attente : Saurez-vous faire preuve d'un mental d'acier ?", note: "Réponse claire attendue sur son mental et sa patience (1pt)", max: 1 },
       { q: "Quelle est votre expérience professionnelle dans les métiers des forces de l'ordre ou fédérales ?", note: "Au moins 1 métier similaire (Valider si le candidat s'y connaît très bien globalement) (1pt)", max: 1 },
       { q: "Quelles sont les 4 règles du PPA ?", note: "Arme tjs considérée chargée / Ne jamais pointer sur ce qu'on ne veut pas détruire / Index hors détente tant que pas visé / Sûr de sa cible et environnement (1pt)", max: 1 },
@@ -474,98 +479,6 @@ const quizData = [
     ]
   }
 ];
-
-// --- FONCTION DE GÉNÉRATION DYNAMIQUE DE L'AFFICHAGE (À intégrer dans ton script principal) ---
-function generateQuizHTML() {
-  const container = document.getElementById('quiz-container'); // Assure-toi d'avoir une div avec cet ID dans ton HTML
-  container.innerHTML = '';
-  
-  let globalQuestionIndex = 0;
-
-  quizData.forEach((chapter) => {
-    // Création du titre de la section
-    const sectionTitle = document.createElement('h2');
-    sectionTitle.innerText = chapter.section;
-    container.appendChild(sectionTitle);
-
-    chapter.questions.forEach((question) => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.style.backgroundColor = '#1a1a1e';
-      card.style.border = '1px solid #2b2b32';
-      card.style.borderRadius = '8px';
-      card.style.padding = '22px';
-      card.style.marginBottom = '20px';
-
-      // Texte de la question
-      const qText = document.createElement('p');
-      qText.style.fontWeight = 'bold';
-      qText.style.color = '#ffffff';
-      qText.innerHTML = `<strong>Question :</strong> ${question.q}`;
-      card.appendChild(qText);
-
-      // Bloc Réponse attendue / Note de correction
-      const noteBox = document.createElement('div');
-      noteBox.className = 'scenario-box';
-      noteBox.style.backgroundColor = '#141416';
-      noteBox.style.borderLeft = question.hasEliminatory ? '3px solid #ef4444' : '3px solid #3b82f6';
-      noteBox.style.padding = '15px';
-      noteBox.style.margin = '15px 0';
-      noteBox.style.borderRadius = '0 6px 6px 0';
-      noteBox.innerHTML = `<strong>Réponse attendue :</strong> <span style="color: #a8a8b3;">${question.note}</span>`;
-      card.appendChild(noteBox);
-
-      // --- ZONE CORRIGÉE : NOUVELLE LIGNE POUR LES BOUTONS DYNAMIQUES ---
-      const buttonsRow = document.createElement('div');
-      buttonsRow.className = 'points-row';
-      // Style flex avec width 100% pour imposer le retour à la ligne complet en bas du bloc
-      buttonsRow.style.cssText = "display: flex; gap: 8px; justify-content: flex-end; width: 100%; margin-top: 15px; border-top: 1px dashed #2b2b32; padding-top: 12px;";
-
-      // 1. Bouton 0 (Actif par défaut)
-      buttonsRow.innerHTML += `<button type="button" class="btn-score active" data-index="${globalQuestionIndex}" data-value="0" style="background-color: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 4px; font-weight: bold; cursor: pointer;" onclick="selectScore(this, 0)">0</button>`;
-
-      // 2. Si la question vaut 1 point max, on ajoute l'option intermédiaire de demi-point (+0.5)
-      if (question.max === 1) {
-        buttonsRow.innerHTML += `<button type="button" class="btn-score" data-index="${globalQuestionIndex}" data-value="0.5" style="background-color: #141416; color: #e1e1e6; border: 1px solid #2b2b32; padding: 6px 14px; border-radius: 4px; font-weight: bold; cursor: pointer;" onclick="selectScore(this, 0.5)">+0.5</button>`;
-      }
-
-      // 3. Boucle automatique qui s'adapte aux questions (crée +1, +2, +3 selon le max indiqué dans l'objet)
-      for (let score = 1; score <= question.max; score++) {
-        buttonsRow.innerHTML += `<button type="button" class="btn-score" data-index="${globalQuestionIndex}" data-value="${score}" style="background-color: #141416; color: #e1e1e6; border: 1px solid #2b2b32; padding: 6px 14px; border-radius: 4px; font-weight: bold; cursor: pointer;" onclick="selectScore(this, ${score})">+${score}</button>`;
-      }
-
-      card.appendChild(buttonsRow);
-      container.appendChild(card);
-      
-      globalQuestionIndex++;
-    });
-  });
-}
-
-// Fonction de gestion du clic visuel sur les boutons
-function selectScore(buttonElement, scoreValue) {
-  // Désactive les autres boutons de la même ligne
-  const parent = buttonElement.parentElement;
-  const buttons = parent.querySelectorAll('.btn-score');
-  buttons.forEach(btn => {
-    btn.classList.remove('active');
-    btn.style.backgroundColor = '#141416';
-    btn.style.color = '#e1e1e6';
-    btn.style.border = '1px solid #2b2b32';
-  });
-
-  // Active le bouton cliqué avec une couleur verte de validation
-  buttonElement.classList.add('active');
-  buttonElement.style.backgroundColor = '#10b981';
-  buttonElement.style.color = '#ffffff';
-  buttonElement.style.border = 'none';
-
-  // Logique additionnelle : tu peux lier ici ta variable de sauvegarde de score globale
-  console.log(`Question Index: ${buttonElement.getAttribute('data-index')} | Score attribué : ${scoreValue}`);
-}
-
-// Lancement automatique au chargement de la page
-window.onload = generateQuizHTML;
 
 const container = document.getElementById("form");
 const userScores = {};
