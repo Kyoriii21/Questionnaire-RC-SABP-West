@@ -201,6 +201,9 @@
     .pts-buttons {
       display: flex;
       gap: 5px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      max-width: 320px;
     }
 
     .pts-buttons button {
@@ -317,7 +320,7 @@
   
   <div class="header-main">
     <img src="favicon.png" alt="SABP Logo" class="header-logo" onerror="this.style.display='none'">
-    <h1>Fiche de Recruitment S.A.B.P. Ouest</h1>
+    <h1>Fiche de Recrutement S.A.B.P. Ouest</h1>
   </div>
 
   <div class="intro-box">
@@ -432,13 +435,13 @@
   </div>
   
   <div class="score-sticky-bar">
-    <div class="score-title" id="score-status-text">Résultat global en pourcentage :</div>
+    <div class="score-title" id="score-status-text">Résultat global :</div>
     <div class="score-value" id="total-percentage">0%</div>
   </div>
 </div>
 
 <script>
-// Génération automatique du tableau des disponibilités (Toutes décochées par défaut !)
+// Génération automatique du tableau des disponibilités
 const jours = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
 const dispoBody = document.getElementById("dispo-body");
 jours.forEach(jour => {
@@ -453,15 +456,10 @@ const data = [
     section: "Chapitre 2 : Partie Théorique",
     questions: [
       { q: "Connaissez-vous la signification de l’acronyme : SABP ?", note: "San Andreas Border Patrol (1pt)", max: 1 },
-      { q: "Missions du SABP : Assurer la sûreté ainsi que la sécurité des frontières ?", note: "Évoqué par le candidat (1pt)", max: 1 },
-      { q: "Missions du SABP : Réguler les trafics illégaux et l’immigration clandestine ?", note: "Évoqué par le candidat (1pt)", max: 1 },
-      { q: "Missions du SABP : Aider les autres polices dans leurs opérations ?", note: "Évoqué par le candidat (1pt)", max: 1 },
+      { q: "Quelles sont les missions du SABP ? :", note: "1. Assurer la sûreté ainsi que la sécurité des frontières<br>2. Réguler les trafics illégaux et l’immigration clandestine<br>3. Aider les autres polices dans leurs opérations (3pt)", max: 3 },
       { q: "Selon vous, quelle est la meilleure arme du SABP ?", note: "La communication / la parole (1pt)", max: 1 },
-      { q: "Missions d’un patrouilleur : Le fait d’apprendre ?", note: "Évoqué par le candidat (1pt)", max: 1 },
-      { q: "Missions d’un patrouilleur : Suivre les ordres donnés par les supérieurs ?", note: "Évoqué par le candidat (1pt)", max: 1 },
-      { q: "Missions d’un patrouilleur : Observer afin de prétendre à une évolution ?", note: "Évoqué par le candidat (1pt)", max: 1 },
-      { q: "Différence S.A.B.P vs B.C.S.O/LSPD : Le droit d'agir dans tout Los Santos (si l'infraction part des frontières) ?", note: "Évoqué par le candidat (1pt)", max: 1 },
-      { q: "Différence S.A.B.P vs B.C.S.O/LSPD : Statut et responsabilités d'une agence fédérale ?", note: "Évoqué par le candidat (1pt)", max: 1 },
+      { q: "Quelles sont les missions d’un patrouilleur ? :", note: "1. Le fait d’apprendre<br>2. Suivre les ordres donnés par les supérieurs<br>3. Observer afin de prétendre à une évolution (3pt)", max: 3 },
+      { q: "Quelles sont les différences entre le S.A.B.P vs B.C.S.O/LSPD ? :", note: "1. Le droit d'agir dans tout Los Santos (si l'infraction part des frontières)<br>2. Statut et responsabilités d'une agence fédérale (2pt)", max: 2 },
       { q: "Contrôle de civils désagréables/longue attente : Saurez-vous faire preuve d'un mental d'acier ?", note: "Réponse claire attendue sur son mental et sa patience (1pt)", max: 1 },
       { q: "Quelle est votre expérience professionnelle dans les métiers des forces de l'ordre ou fédérales ?", note: "Au moins 1 métier similaire (Valider si le candidat s'y connaît très bien globalement) (1pt)", max: 1 },
       { q: "Quelles sont les 4 règles du PPA ?", note: "Arme tjs considérée chargée / Ne jamais pointer sur ce qu'on ne veut pas détruire / Index hors détente tant que pas visé / Sûr de sa cible et environnement (1pt)", max: 1 },
@@ -509,7 +507,7 @@ data.forEach((block, blockIndex) => {
 
     const note = document.createElement("div");
     note.className = "question-note";
-    note.innerHTML = `<strong>Réponse attendue :</strong> ${item.note}`;
+    note.innerHTML = `<strong>Réponse attendue :</strong><br>${item.note}`;
     textContainer.appendChild(note);
 
     div.appendChild(textContainer);
@@ -517,10 +515,10 @@ data.forEach((block, blockIndex) => {
     const buttonsDiv = document.createElement("div");
     buttonsDiv.className = "pts-buttons";
 
-    // Bouton pour remettre à 0
+    // Bouton de réinitialisation à 0 (Sélectionné par défaut)
     const zeroBtn = document.createElement("button");
     zeroBtn.innerText = "0";
-    zeroBtn.classList.add("selected-pt"); // Sélectionné par défaut
+    zeroBtn.classList.add("selected-pt");
     zeroBtn.onclick = () => {
       clearSelection(buttonsDiv);
       zeroBtn.classList.add("selected-pt");
@@ -529,43 +527,20 @@ data.forEach((block, blockIndex) => {
     };
     buttonsDiv.appendChild(zeroBtn);
 
-    // Si la question vaut 1 point, on met un palier à 0.5 et 1
-    if (item.max === 1) {
-      const halfBtn = document.createElement("button");
-      halfBtn.innerText = "+0.5";
-      halfBtn.onclick = () => {
+    // Boucle de génération automatique de paliers (par pas de 0.5) jusqu'au max de la question
+    for (let val = 0.5; val <= item.max; val += 0.5) {
+      const btn = document.createElement("button");
+      btn.innerText = `+${val}`;
+      btn.onclick = () => {
         clearSelection(buttonsDiv);
-        halfBtn.classList.add("selected-pt");
-        userScores[qKey] = 0.5;
+        btn.classList.add("selected-pt");
+        userScores[qKey] = val;
         updateTotalPercentage();
       };
-      buttonsDiv.appendChild(halfBtn);
-
-      const fullBtn = document.createElement("button");
-      fullBtn.innerText = "+1";
-      fullBtn.onclick = () => {
-        clearSelection(buttonsDiv);
-        fullBtn.classList.add("selected-pt");
-        userScores[qKey] = 1;
-        updateTotalPercentage();
-      };
-      buttonsDiv.appendChild(fullBtn);
-    } 
-    // Si la question vaut 2 points, on met les paliers adaptés
-    else if (item.max === 2) {
-      [0.5, 1, 1.5, 2].forEach(val => {
-        const btn = document.createElement("button");
-        btn.innerText = `+${val}`;
-        btn.onclick = () => {
-          clearSelection(buttonsDiv);
-          btn.classList.add("selected-pt");
-          userScores[qKey] = val;
-          updateTotalPercentage();
-        };
-        buttonsDiv.appendChild(btn);
-      });
+      buttonsDiv.appendChild(btn);
     }
 
+    // Gestion du bouton éliminatoire
     if (item.hasEliminatory) {
       const elimBtn = document.createElement("button");
       elimBtn.className = "btn-danger";
@@ -615,7 +590,7 @@ function updateTotalPercentage() {
     scoreValueDiv.innerText = `${percentage}% (${currentTotal} / ${totalPointsPossible} Pts)`;
     scoreValueDiv.style.background = "var(--main-yellow)";
     scoreValueDiv.style.color = "#000";
-       
+        
     if (currentTotal >= 10) {
       scoreStatusText.innerHTML = "Résultat global : <span style='color:var(--success-green); font-weight:bold;'>Candidature Validée (≥ 10 Pts)</span>";
     } else {
@@ -626,4 +601,4 @@ function updateTotalPercentage() {
 </script>
 
 </body>
-</html>
+</html> 
