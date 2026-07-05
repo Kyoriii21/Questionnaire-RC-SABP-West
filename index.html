@@ -401,14 +401,12 @@
       <span style="margin-left: 10px; color: #949ba4;">— Grade de base suite à la validation</span>
     </div>
 
-    <!-- AJOUT DE LA CATÉGORIE RESPONSABILITÉS -->
     <div class="role-category">\\ Responsabilités //</div>
 
     <div class="role-category">\\ Brigades //</div>
 
     <div class="role-category">\\ Spécialisations //</div>
 
-    <!-- CHANGEMENT DU NOM PAR "FORMATIONS" SEULEMENT -->
     <div class="role-category">\\ Formations //</div>
     <div class="role-item">
       <input type="checkbox" checked> 
@@ -532,7 +530,6 @@ data.forEach((block, blockIndex) => {
     const buttonsDiv = document.createElement("div");
     buttonsDiv.className = "pts-buttons";
 
-    // Bouton de réinitialisation à 0 (Sélectionné par défaut)
     const zeroBtn = document.createElement("button");
     zeroBtn.innerText = "0";
     zeroBtn.classList.add("selected-pt");
@@ -544,8 +541,6 @@ data.forEach((block, blockIndex) => {
     };
     buttonsDiv.appendChild(zeroBtn);
 
-    // LOGIQUE SPÉCIFIQUE : 
-    // Si strictIntegers est vrai (Missions SABP et Patrouilleur), on avance de 1 en 1 (+1, +2, +3)
     if (item.strictIntegers) {
       for (let val = 1; val <= item.max; val++) {
         const btn = document.createElement("button");
@@ -559,7 +554,6 @@ data.forEach((block, blockIndex) => {
         buttonsDiv.appendChild(btn);
       }
     } else {
-      // Pour TOUTES les autres questions, on laisse les paliers avec demi-points (+0.5, +1, +1.5, etc.)
       for (let val = 0.5; val <= item.max; val += 0.5) {
         const btn = document.createElement("button");
         btn.innerText = `+${val}`;
@@ -573,7 +567,6 @@ data.forEach((block, blockIndex) => {
       }
     }
 
-    // Gestion du bouton éliminatoire
     if (item.hasEliminatory) {
       const elimBtn = document.createElement("button");
       elimBtn.className = "btn-danger";
